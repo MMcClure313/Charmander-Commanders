@@ -36,10 +36,10 @@ public class ScreenManager extends JFrame{
         
         // During integration change this to whatever the first screen should be
         // Most likely main menu
-        /* 
-        TestPanelOne menu = new TestPanelOne();
+        
+        MainMenuScreen menu = new MainMenuScreen();
         switchScreen(menu);
-        */      
+              
         
         pack();
         setVisible(true);
