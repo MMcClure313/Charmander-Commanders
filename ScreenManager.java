@@ -37,7 +37,8 @@ public class ScreenManager extends JFrame{
         // During integration change this to whatever the first screen should be
         // Most likely main menu
         
-        MainMenuScreen menu = new MainMenuScreen();
+        MainMenuScreen menu = new MainMenuScreen(getPreferredSize());
+        //GameScreen menu = new GameScreen(getPreferredSize());
         switchScreen(menu);
               
         
