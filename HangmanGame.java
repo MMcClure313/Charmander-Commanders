@@ -1,14 +1,16 @@
-public class HangmanGame {
-    private String hiddenPhrase;
-    private StringBuilder displayedPhrase;
-    private List<Character> guessedLetters;
-    private int incorrectGuesses;
-    private static final int MAX_INCORRECT_GUESSES = 6;
+import java.util.HashSet;
+import java.util.Set;
 
-    public HangmanGame() {
-        hiddenPhrase = WordGenerator.getRandomWord();
-        displayedPhrase = new StringBuilder("_".repeat(hiddenPhrase.length()));
-        guessedLetters = new ArrayList<>();
+public class HangmanGame {
+    private HangmanGameLogic gameLogic;
+    private StringBuilder displayedPhrase;
+    private Set<Character> guessedLetters;
+    private int incorrectGuesses;
+
+    public HangmanGame(int maxIncorrectGuesses) {
+        gameLogic = new HangmanGameLogic();
+        displayedPhrase = new StringBuilder("_".repeat(gameLogic.getHiddenPhrase().length()));
+        guessedLetters = new HashSet<>();
         incorrectGuesses = 0;
     }
 
@@ -27,14 +29,7 @@ public class HangmanGame {
         }
 
         guessedLetters.add(letter);
-        boolean found = false;
-        for (int i = 0; i < hiddenPhrase.length(); i++) {
-            if (hiddenPhrase.charAt(i) == letter) {
-                displayedPhrase.setCharAt(i, letter);
-                found = true;
-            }
-        }
-
+        boolean found = gameLogic.guessLetter(letter, displayedPhrase);
         if (!found) {
             incorrectGuesses++;
         }
@@ -43,10 +38,10 @@ public class HangmanGame {
     }
 
     public boolean isGameOver() {
-        return incorrectGuesses >= MAX_INCORRECT_GUESSES || !displayedPhrase.toString().contains("_");
+        return incorrectGuesses >= gameLogic.getMaxIncorrectGuesses() || !displayedPhrase.toString().contains("_");
     }
 
     public String getHiddenPhrase() {
-        return hiddenPhrase;
+        return gameLogic.getHiddenPhrase();
     }
 }
