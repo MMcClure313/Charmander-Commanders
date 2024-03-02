@@ -44,4 +44,14 @@ public class HangmanGame {
     public String getHiddenPhrase() {
         return gameLogic.getHiddenPhrase();
     }
+
+    // Method for finding a guessed letter within a word
+    public boolean isLetterGuessed(char letter) {
+        return guessedLetters.contains(letter);
+    }
+
+    // Method for 'trashing' guessed letters
+    public void trashGuessedLetters() {
+        guessedLetters.clear();
+    }
 }
