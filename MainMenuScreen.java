@@ -1,11 +1,11 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.swing.*;
+
 
 
 /**
@@ -16,38 +16,55 @@ import javax.swing.SwingConstants;
 public class MainMenuScreen extends Screen {
 	private Dimension windowSize;
 
-	public MainMenuScreen(Dimension frameSize) {
-		windowSize = frameSize;
+	public MainMenuScreen() {
+		
 		this.setLayout(new BorderLayout());
 		
-
-		
-		JLabel l1 = new JLabel("Start");
-		JLabel l2 = new JLabel("Options");
-		JLabel l3 = new JLabel("Quit");
-		
+		//Create Title panel and text		
 		JPanel titlePanel = new JPanel();
 		
-		System.out.println("" + windowSize.width + windowSize.height);
-		
-		titlePanel.setPreferredSize(new Dimension(windowSize.width/4, windowSize.height/4));
-		JLabel titleLabel = new JLabel("WORD GAME");
+		JLabel titleLabel = new JLabel("WORD GAME"); // Title text
 		titleLabel.setFont(new Font("Comic Sans", Font.BOLD, 50));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titlePanel.setBackground(new Color(255, 239, 205));
-		titlePanel.add(titleLabel);
+		titlePanel.add(titleLabel); // Add title to panel
 		
-		
+		//Create Options panel and buttons
 		JPanel optionsPanel = new JPanel();
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
-		optionsPanel.add(l1);
-		optionsPanel.add(l2);
-		optionsPanel.add(l3);
+		
+		JButton newGameButton = new JButton("New Game");
+		JButton optionsButton = new JButton("Options");
+		JButton quitButton = new JButton("Quit");
+		
+        newGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	try {
+					newGameButtonClicked();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            }
+        });
+		
+		optionsPanel.add(newGameButton);
+		optionsPanel.add(optionsButton);
+		optionsPanel.add(quitButton);
+		
+		
+
 
 		add(titlePanel, BorderLayout.PAGE_START);
 		add(optionsPanel, BorderLayout.CENTER);
 						
 	
+	}
+	
+	private void newGameButtonClicked() throws IOException {
+		GameScreen gameScreen = new GameScreen();
+		gameScreen.switchToThis();
 	}
 	
 	

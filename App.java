@@ -1,7 +1,17 @@
+
+import javax.swing.SwingUtilities;
+
 public class App {
-    public static void main(String[] args) {
-    	
-    ScreenManager.getInstance();	
-    
+	
+	public void run() {
+        ScreenManager.getInstance();
     }
+	
+	public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Main app = new Main();
+            app.run();
+        });
+    }
+	
 }

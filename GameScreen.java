@@ -1,62 +1,95 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
 
-import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
-public class GameScreen extends Screen {
-	private Dimension windowSize;
+import javax.swing.*;
+
+public class GameScreen extends Screen implements Observer {
 	
-	public GameScreen(Dimension FrameWindow) {
-		windowSize = FrameWindow;
-		
-		this.setLayout(new BorderLayout());
-		
-		
-		
-		
-		//The top panel, going to be used to read the word length, display hidden and revealed letters
-		//Whatever gameScreen logic that we have will read from gameLogic to get the correct 
-		JPanel wordPanel = new JPanel();
-		wordPanel.setPreferredSize(new Dimension((windowSize.width), windowSize.height/4));
-		wordPanel.setBackground(new Color(122, 122, 122));
-		//titleLabel.setFont(new Font("Arial", Font.BOLD, 50));
+	//you just lost the game
+	private HangmanGame game;
+	
+	//Components that observer manipulates
+	private JLabel displayedPhrase;
+	private JTextField guessEntryBox;
+	private JLabel guessedLetters;
 
-		//WestAligned Grid Panel that will carry the elements of gameplay
-		JPanel playPanel = new JPanel();
-		playPanel.setLayout(new GridLayout(3, 1));
+	
+	public GameScreen() throws IOException {	
 		
+		game = new HangmanGame("Hangman_wordbank.csv", this);
 		
-		//The three panels made here are for debug purposes. They will likely be made in a seperate class that communicates with the word game logic, and then returns information to here to be displayed
-		JPanel guessedPanel = new JPanel();
-		guessedPanel.setPreferredSize(new Dimension(windowSize.width/3*2, windowSize.height/4));
-		guessedPanel.setBackground(Color.RED);
+		//Screen uses grid layout cell (0,0) = imagePanel, cell(1,0) = gameplayPanel
+		this.setLayout(new GridLayout(1,2)); //Magic number bad
 		
-		JPanel textPanel = new JPanel();
-		textPanel.setPreferredSize(new Dimension(windowSize.width/3*2, windowSize.height/4));
-		textPanel.setBackground(Color.GREEN);
+		//Create imagePanel
+		JPanel imagePanel = new JPanel();
+		imagePanel.setBorder(BorderFactory.createTitledBorder("Hangman"));
 		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(windowSize.width/3*2, windowSize.height/4));
-		buttonPanel.setBackground(Color.BLUE);
+		//Create gameplayPanel
+		JPanel gameplayPanel = new JPanel();
+		gameplayPanel.setLayout(new BoxLayout(gameplayPanel, BoxLayout.Y_AXIS));
 		
-		playPanel.add(guessedPanel);
-		playPanel.add(textPanel);
-		playPanel.add(buttonPanel);
+		//Create displayPanel
+		JPanel displayPanel = new JPanel();
+		displayedPhrase = new JLabel("ERROR");
+		displayPanel.setBorder(BorderFactory.createTitledBorder("Phrase"));
+		displayPanel.add(displayedPhrase);
 		
+		//Create guessPanel default flow layout
+		JPanel guessPanel = new JPanel();
 		
+		guessEntryBox = new JTextField(10); //Magic number bad
 		
-		add(wordPanel, BorderLayout.NORTH);
-		add(playPanel, BorderLayout.WEST);
+		JButton guessButton = new JButton("Guess");
+        guessButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	game.guessLetter(guessEntryBox.getText().trim().charAt(0));
+            }
+        });
+        
+        guessPanel.setBorder(BorderFactory.createTitledBorder("Guess"));
 		
+		guessPanel.add(guessEntryBox);
+		guessPanel.add(guessButton);
 		
+		//Create lettersPanel
+		JPanel lettersPanel = new JPanel();
 		
+		lettersPanel.setBorder(BorderFactory.createTitledBorder("Guessed Letters"));
 		
+		guessedLetters = new JLabel("ERROR");
+		lettersPanel.add(guessedLetters);
+			
+		//Add everything to game play panel
+		gameplayPanel.add(displayPanel);
+		gameplayPanel.add(guessPanel);
+		gameplayPanel.add(lettersPanel);
 		
+		//Add everything to main screen
+		this.add(imagePanel);
+		this.add(gameplayPanel);
 		
+		game.startGame();			
 		
 	}
+	
+    @Override
+    public void updateDisplayedPhrase(String updateDisplayPhrase) {
+        displayedPhrase.setText(updateDisplayPhrase);
+    }
+    
+    @Override
+    public void guessLetter(Character guess) {
+    	game.guessLetter(guess);
+    }
+    
+    @Override
+    public void updateGuessedLetters(String guesses) {
+    	guessedLetters.setText(guesses);
+    }
 	
 }

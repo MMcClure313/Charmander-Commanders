@@ -1,4 +1,5 @@
 
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -34,13 +35,8 @@ public class ScreenManager extends JFrame{
         cardLayout = new CardLayout();
         setLayout(cardLayout);
         
-        // During integration change this to whatever the first screen should be
-        // Most likely main menu
-        
-        MainMenuScreen menu = new MainMenuScreen(getPreferredSize());
-        //GameScreen menu = new GameScreen(getPreferredSize());
+        MainMenuScreen menu = new MainMenuScreen();
         switchScreen(menu);
-              
         
         pack();
         setVisible(true);
