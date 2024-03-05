@@ -9,7 +9,7 @@ public class App {
 	
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Main app = new Main();
+            App app = new App();
             app.run();
         });
     }

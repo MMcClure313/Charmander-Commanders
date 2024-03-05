@@ -21,6 +21,8 @@ public class GameScreen extends Screen implements Observer {
 		
 		game = new HangmanGame("Hangman_wordbank.csv", this);
 		
+		
+		
 		//Screen uses grid layout cell (0,0) = imagePanel, cell(1,0) = gameplayPanel
 		this.setLayout(new GridLayout(1,2)); //Magic number bad
 		
