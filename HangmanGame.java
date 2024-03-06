@@ -38,6 +38,9 @@ public class HangmanGame {
             	sb.append(' ');
             }
             observer.updateGuessedLetters(sb.toString());
+            int guessesRemaining = MAX_INCORRECT_GUESSES - incorrectGuesses;
+            String text = "" + guessesRemaining;
+            observer.updateGameState(text, isGameOver(), isGameWon());
             
             
         }
@@ -52,12 +55,8 @@ public class HangmanGame {
         System.out.print(hiddenPhrase); // FOR TESTING REMOVE LATER
     }
 
-    public String getDisplayedPhrase() {
+    private String getDisplayedPhrase() {
         return displayedPhrase.toString();
-    }
-
-    public int getIncorrectGuesses() {
-        return incorrectGuesses;
     }
 
     public boolean guessLetter(char letter) {
@@ -83,11 +82,11 @@ public class HangmanGame {
         return found;
     }
 
-    public boolean isGameOver() {
+    private boolean isGameOver() {
         return incorrectGuesses >= MAX_INCORRECT_GUESSES || !displayedPhrase.toString().contains("_");
     }
-
-    public String getHiddenPhrase() {
-        return hiddenPhrase;
+    
+    private boolean isGameWon() {
+    	return (MAX_INCORRECT_GUESSES - incorrectGuesses) != 0;
     }
 }
