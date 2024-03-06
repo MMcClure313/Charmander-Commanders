@@ -15,3 +15,6 @@ The bottom right is the letters that have already been guessed.
 On the upper left is an exit button for the game. This will exit you to the main menu, after ensuring you want to leave.
 
 This is where I write what happens when you run out of guesses or guess the word but I'm currently waiting on that to be finished.
+
+## To start the application:
+Download the github repo into a java workspace. Our group worked with ecclipse, and can not guarantee that the application will run off of other java IDEs. Run the application off of the App.java file.
