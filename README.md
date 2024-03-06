@@ -12,4 +12,6 @@ The top right is the word to be guessed. It begins as all underlines, but as cor
 The middle right is your guessing field. You put in a single character to be guessed, and click guess.
 The bottom right is the letters that have already been guessed.
 
+On the upper left is an exit button for the game. This will exit you to the main menu, after ensuring you want to leave.
+
 This is where I write what happens when you run out of guesses or guess the word but I'm currently waiting on that to be finished.
