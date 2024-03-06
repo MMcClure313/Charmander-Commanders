@@ -66,7 +66,7 @@ public class GameScreen extends Screen implements Observer {
             			    JOptionPane.WARNING_MESSAGE);
             	}
             	else {
-            	game.guessLetter(guessEntryBox.getText().trim().charAt(0));
+            	game.guessLetter(guessEntryBox.getText().trim().toLowerCase().charAt(0));
             	}
             }
         });
