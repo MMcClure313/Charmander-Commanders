@@ -22,9 +22,13 @@ public class GameScreen extends Screen implements Observer {
 		game = new HangmanGame("Hangman_wordbank.csv", this);
 		
 		
-		
+		this.setLayout(new BorderLayout());
+
 		//Screen uses grid layout cell (0,0) = imagePanel, cell(1,0) = gameplayPanel
-		this.setLayout(new GridLayout(1,2)); //Magic number bad
+		//this.setLayout(new GridLayout(1,2)); //Magic number bad
+		
+		JPanel gameScreenLayout = new JPanel();
+		gameScreenLayout.setLayout(new GridLayout(1,2));
 		
 		//Create imagePanel
 		JPanel imagePanel = new JPanel();
@@ -40,6 +44,10 @@ public class GameScreen extends Screen implements Observer {
 		displayPanel.setBorder(BorderFactory.createTitledBorder("Phrase"));
 		displayPanel.add(displayedPhrase);
 		
+		JPanel metaButtonPanel = new JPanel();
+		metaButtonPanel.setBorder(BorderFactory.createEtchedBorder());
+		metaButtonPanel.setLayout(new GridLayout(1,10));
+		
 		//Create guessPanel default flow layout
 		JPanel guessPanel = new JPanel();
 		
@@ -49,8 +57,40 @@ public class GameScreen extends Screen implements Observer {
         guessButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	game.guessLetter(guessEntryBox.getText().trim().charAt(0));
+            	
+            	
+            	if(guessEntryBox.getText().length() > 1) {
+            		JOptionPane.showMessageDialog(guessPanel,
+            			    "Invalid guess\nEnsure your guesses are only one letter",
+            			    "",
+            			    JOptionPane.WARNING_MESSAGE);
+            	}
+            	else {
+            	game.guessLetter(guessEntryBox.getText().trim().toLowerCase().charAt(0));
+            	}
             }
+        });
+        
+        JButton exitButton = new JButton("X");
+        exitButton.setBackground(Color.red);
+        exitButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		//Shows confirmation
+        		int optionSelect = JOptionPane.showConfirmDialog(
+        				gameScreenLayout,
+        			    "Quit to Main Menu?",
+        			    "Quit Confirmation",
+        			    JOptionPane.YES_NO_OPTION);
+        		
+        		
+        		if(optionSelect == JOptionPane.YES_OPTION) {
+	        		//Creates a new main menu screen
+	               	MainMenuScreen menuScreen = null;
+	    				menuScreen = new MainMenuScreen();
+	                	menuScreen.switchToThis();
+        		}
+        	}
         });
         
         guessPanel.setBorder(BorderFactory.createTitledBorder("Guess"));
@@ -72,9 +112,17 @@ public class GameScreen extends Screen implements Observer {
 		gameplayPanel.add(lettersPanel);
 		
 		//Add everything to main screen
-		this.add(imagePanel);
-		this.add(gameplayPanel);
+		gameScreenLayout.add(imagePanel);
+		gameScreenLayout.add(gameplayPanel);
 		
+		metaButtonPanel.add(exitButton);
+		for(int i = 0; i < 9; i++) {
+			metaButtonPanel.add(new JPanel());
+		}
+		
+		
+		this.add(gameScreenLayout, BorderLayout.CENTER);
+		this.add(metaButtonPanel, BorderLayout.NORTH);
 		game.startGame();			
 		
 	}
