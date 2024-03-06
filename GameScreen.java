@@ -15,24 +15,25 @@ public class GameScreen extends Screen implements Observer {
 	private JLabel displayedPhrase;
 	private JTextField guessEntryBox;
 	private JLabel guessedLetters;
+	private JLabel guessRemainingLabel;
 
 	
 	public GameScreen() throws IOException {	
 		
-		game = new HangmanGame("Hangman_wordbank.csv", this);
+		game = new HangmanGame("src/Hangman_wordbank.csv", this);
 		
 		
 		this.setLayout(new BorderLayout());
 
-		//Screen uses grid layout cell (0,0) = imagePanel, cell(1,0) = gameplayPanel
-		//this.setLayout(new GridLayout(1,2)); //Magic number bad
-		
+		//Screen uses grid layout cell (0,0) = imagePanel, cell(1,0) = gameplayPanel	
 		JPanel gameScreenLayout = new JPanel();
-		gameScreenLayout.setLayout(new GridLayout(1,2));
+		gameScreenLayout.setLayout(new GridLayout(1,2)); // Magic number bad
 		
 		//Create imagePanel
 		JPanel imagePanel = new JPanel();
 		imagePanel.setBorder(BorderFactory.createTitledBorder("Hangman"));
+		guessRemainingLabel = new JLabel("Guesses Remaining 999");
+		imagePanel.add(guessRemainingLabel);		
 		
 		//Create gameplayPanel
 		JPanel gameplayPanel = new JPanel();
@@ -58,21 +59,24 @@ public class GameScreen extends Screen implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
-            	
-            	if(guessEntryBox.getText().length() > 1) {
+            	String input = guessEntryBox.getText();
+            	if(input.length() == 1 && input.matches("[a-zA-Z]")) {
+            		game.guessLetter(guessEntryBox.getText().trim().toLowerCase().charAt(0));
+            		guessEntryBox.setText("");
+            	}
+            	else {
             		JOptionPane.showMessageDialog(guessPanel,
             			    "Invalid guess\nEnsure your guesses are only one letter",
             			    "",
             			    JOptionPane.WARNING_MESSAGE);
-            	}
-            	else {
-            	game.guessLetter(guessEntryBox.getText().trim().toLowerCase().charAt(0));
+            		
+            		guessEntryBox.setText("");
             	}
             }
         });
         
         JButton exitButton = new JButton("X");
-        exitButton.setBackground(Color.red);
+        exitButton.setBackground(Color.red); 
         exitButton.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -85,10 +89,7 @@ public class GameScreen extends Screen implements Observer {
         		
         		
         		if(optionSelect == JOptionPane.YES_OPTION) {
-	        		//Creates a new main menu screen
-	               	MainMenuScreen menuScreen = null;
-	    				menuScreen = new MainMenuScreen();
-	                	menuScreen.switchToThis();
+        			returnToMenu();
         		}
         	}
         });
@@ -141,5 +142,29 @@ public class GameScreen extends Screen implements Observer {
     public void updateGuessedLetters(String guesses) {
     	guessedLetters.setText(guesses);
     }
+    
+    @Override
+    public void updateGameState(String guessesRemaining, boolean gameOver, boolean gameWon) {
+    	if(!gameOver) {
+    		String text = "Guesses Remaining " + guessesRemaining;
+    		guessRemainingLabel.setText(text);
+    	}else {
+    		if(gameWon) {
+                JOptionPane.showMessageDialog(null, "!!! YOU WON !!!");
+                returnToMenu();      		
+    		}else {
+                JOptionPane.showMessageDialog(null, "YOU LOSE :(");
+                returnToMenu();  
+    		}
+    		
+    	}
+    }
+    
+    private void returnToMenu() {
+		MainMenuScreen menuScreen = new MainMenuScreen();
+    	menuScreen.switchToThis();
+    }
+    
+    
 	
 }
