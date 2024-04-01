@@ -63,6 +63,7 @@ public class MainMenuScreen extends Screen {
 		
 		// Button Action Listeners
 		// Start button action to start the game
+		/*
         startBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Perform actions when Start button is clicked
@@ -77,9 +78,9 @@ public class MainMenuScreen extends Screen {
             	gameScreen.switchToThis();
                 
             }
-        });
+        });*/
         // Options button to change settings
-        optionsBtn.addActionListener(new ActionListener() {
+        startBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Perform actions when Options button is clicked
                 // Change difficulty, set Theme

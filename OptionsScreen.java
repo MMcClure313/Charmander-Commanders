@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JSplitPane;
 import java.awt.GridBagLayout;
@@ -121,6 +122,10 @@ public class OptionsScreen extends Screen{
 		mainMenuBtn.setBounds(166, 244, 124, 23);
 		optionsPanel.add(mainMenuBtn);
 		
+		JButton beginBtn = new JButton("Begin");
+		beginBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
+		beginBtn.setBounds(166, 150, 124, 23);
+		optionsPanel.add(beginBtn);
 		
 		// Action listener for the main menu button
 		mainMenuBtn.addActionListener(new ActionListener() {
@@ -132,6 +137,22 @@ public class OptionsScreen extends Screen{
             }
         });
 
+		
+		//So this is where all the settings are going to go for the game. We'll make GameScreen construct with a few paramaters for difficulty, timed, and themes in order to make it work.
+		beginBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				GameScreen gmScreen = null;
+				try {
+					gmScreen = new GameScreen();
+				} catch(IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				gmScreen.switchToThis();
+			}
+			
+		});
 		
 		
 		
