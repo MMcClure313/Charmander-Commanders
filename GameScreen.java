@@ -20,7 +20,7 @@ public class GameScreen extends Screen implements Observer {
 	
 	public GameScreen() throws IOException {	
 		
-		game = new HangmanGame("./Hangman_wordbank.csv", this);
+		game = new HangmanGame("./default_words.csv", this);
 		
 		
 		this.setLayout(new BorderLayout());
