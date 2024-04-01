@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.swing.JSplitPane;
 import java.awt.GridBagLayout;
@@ -19,11 +20,14 @@ import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 
 public class OptionsScreen extends Screen{
+	
+	
 	
 	public OptionsScreen()
 	{
@@ -143,8 +147,21 @@ public class OptionsScreen extends Screen{
 			public void actionPerformed(ActionEvent e) {
 				
 				GameScreen gmScreen = null;
+				
 				try {
-					gmScreen = new GameScreen();
+					String difficulty = "";
+					
+				    for (Enumeration buttons = difficultyBtnGroup.getElements(); buttons.hasMoreElements();) {
+				        AbstractButton button = (AbstractButton) buttons.nextElement();
+
+				        if (button.isSelected()) {
+				            difficulty = button.getText();
+				            break;
+				        }
+				    }
+					
+					gmScreen = new GameScreen(difficulty);
+					
 				} catch(IOException e1) {
 					e1.printStackTrace();
 				}

@@ -15,12 +15,12 @@ public class GameScreen extends Screen implements Observer {
 	private JLabel displayedPhrase;
 	private JTextField guessEntryBox;
 	private JLabel guessedLetters;
-	private JLabel guessRemainingLabel;
 
+	private HangmanPanel hangmanPanel;
 	
-	public GameScreen() throws IOException {	
+	public GameScreen(String difficulty) throws IOException {	
 		
-		game = new HangmanGame("./Hangman_wordbank.csv", this);
+		game = new HangmanGame("src/Hangman_wordbank.csv", this, difficulty);
 		
 		
 		this.setLayout(new BorderLayout());
@@ -30,10 +30,7 @@ public class GameScreen extends Screen implements Observer {
 		gameScreenLayout.setLayout(new GridLayout(1,2)); // Magic number bad
 		
 		//Create imagePanel
-		JPanel imagePanel = new JPanel();
-		imagePanel.setBorder(BorderFactory.createTitledBorder("Hangman"));
-		guessRemainingLabel = new JLabel("Guesses Remaining 999");
-		imagePanel.add(guessRemainingLabel);		
+		hangmanPanel = new HangmanPanel();		
 		
 		//Create gameplayPanel
 		JPanel gameplayPanel = new JPanel();
@@ -113,7 +110,7 @@ public class GameScreen extends Screen implements Observer {
 		gameplayPanel.add(lettersPanel);
 		
 		//Add everything to main screen
-		gameScreenLayout.add(imagePanel);
+		gameScreenLayout.add(hangmanPanel);
 		gameScreenLayout.add(gameplayPanel);
 		
 		metaButtonPanel.add(exitButton);
@@ -147,7 +144,7 @@ public class GameScreen extends Screen implements Observer {
     public void updateGameState(String guessesRemaining, boolean gameOver, boolean gameWon) {
     	if(!gameOver) {
     		String text = "Guesses Remaining " + guessesRemaining;
-    		guessRemainingLabel.setText(text);
+    		hangmanPanel.updatePanel(text);
     	}else {
     		if(gameWon) {
                 JOptionPane.showMessageDialog(null, "!!! YOU WON !!!");

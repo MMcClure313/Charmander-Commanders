@@ -14,13 +14,16 @@ public class HangmanGame {
     private List<Character> guessedLetters;
     
     private int incorrectGuesses;
-    private static final int MAX_INCORRECT_GUESSES = 6;
+    private int maxIncorrectGuesses;
+    private static final int EASY_MAX_INCORRECT_GUESSES = 8;
+    private static final int MEDIUM_MAX_INCORRECT_GUESSES = 6;
+    private static final int HARD_MAX_INCORRECT_GUESSES = 4;
 
-    public HangmanGame(String wordBankFile, Observer observer) throws IOException {
+    public HangmanGame(String wordBankFile, Observer observer, String difficulty) throws IOException {
     	
     	wordGenerator = new WordGenerator(wordBankFile);
     	this.observer = observer;
-    	initializeGame();
+    	initializeGame(difficulty);
     	
     }
     
@@ -38,7 +41,7 @@ public class HangmanGame {
             	sb.append(' ');
             }
             observer.updateGuessedLetters(sb.toString());
-            int guessesRemaining = MAX_INCORRECT_GUESSES - incorrectGuesses;
+            int guessesRemaining = maxIncorrectGuesses - incorrectGuesses;
             String text = "" + guessesRemaining;
             observer.updateGameState(text, isGameOver(), isGameWon());
             
@@ -46,10 +49,25 @@ public class HangmanGame {
         }
     }
     
-    private void initializeGame() {
+    private void initializeGame(String difficulty) {
         hiddenPhrase = wordGenerator.getRandomWord();
         displayedPhrase = new StringBuilder("_".repeat(hiddenPhrase.length()));
         guessedLetters = new ArrayList<>();
+        
+        switch (difficulty.toLowerCase()) {
+	        case "easy":
+	            maxIncorrectGuesses = EASY_MAX_INCORRECT_GUESSES;
+	            break;
+	        case "medium":
+	            maxIncorrectGuesses = MEDIUM_MAX_INCORRECT_GUESSES;
+	            break;
+	        case "hard":
+	            maxIncorrectGuesses = HARD_MAX_INCORRECT_GUESSES;
+	            break;
+	        default:
+	            throw new IllegalArgumentException("Invalid difficulty level");
+	    }
+        
         incorrectGuesses = 0;   
         
         System.out.print(hiddenPhrase); // FOR TESTING REMOVE LATER
@@ -83,10 +101,10 @@ public class HangmanGame {
     }
 
     private boolean isGameOver() {
-        return incorrectGuesses >= MAX_INCORRECT_GUESSES || !displayedPhrase.toString().contains("_");
+        return incorrectGuesses >= maxIncorrectGuesses || !displayedPhrase.toString().contains("_");
     }
     
     private boolean isGameWon() {
-    	return (MAX_INCORRECT_GUESSES - incorrectGuesses) != 0;
+    	return (maxIncorrectGuesses - incorrectGuesses) != 0;
     }
 }
