@@ -20,8 +20,10 @@ public class GameScreen extends Screen implements Observer {
 	
 	public GameScreen(String difficulty) throws IOException {	
 		
-		game = new HangmanGame("./Hangman_wordbank.csv", this, difficulty);
-		
+
+		game = new HangmanGame("./default_words.csv", this);
+		//the other files are western_words.csv, space_words.csv and ocean_words.csv
+
 		
 		this.setLayout(new BorderLayout());
 
