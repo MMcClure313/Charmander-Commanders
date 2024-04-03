@@ -116,6 +116,7 @@ public class OptionsScreen extends Screen{
 		JComboBox<String> themeBox = new JComboBox<String>();
 		themeBox.setBounds(137, 69, 173, 22);
 		themeBox.addItem("Default");
+		themeBox.addItem("Space");
 		optionsPanel.add(themeBox);
 		
 		
@@ -159,8 +160,10 @@ public class OptionsScreen extends Screen{
 				            break;
 				        }
 				    }
+				    
+				    String selectedTheme = (String) themeBox.getSelectedItem();
 					
-					gmScreen = new GameScreen(difficulty);
+					gmScreen = new GameScreen(difficulty, selectedTheme);
 					
 				} catch(IOException e1) {
 					e1.printStackTrace();

@@ -28,10 +28,10 @@ public class HangmanGame {
     }
     
     public void startGame() {
-    	notifyObserver();
+    	notifyObserver(true);
     }
     
-    private void notifyObserver() {
+    private void notifyObserver(boolean guessCorrect) {
         if (observer != null) {
         	
             observer.updateDisplayedPhrase(getDisplayedPhrase());
@@ -43,7 +43,7 @@ public class HangmanGame {
             observer.updateGuessedLetters(sb.toString());
             int guessesRemaining = maxIncorrectGuesses - incorrectGuesses;
             String text = "" + guessesRemaining;
-            observer.updateGameState(text, isGameOver(), isGameWon());
+            observer.updateGameState(text, isGameOver(), isGameWon(), guessCorrect);
             
             
         }
@@ -96,7 +96,7 @@ public class HangmanGame {
             incorrectGuesses++;
         }
         
-        notifyObserver();
+        notifyObserver(found);
         return found;
     }
 

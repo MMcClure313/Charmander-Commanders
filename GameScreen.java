@@ -18,10 +18,22 @@ public class GameScreen extends Screen implements Observer {
 
 	private HangmanPanel hangmanPanel;
 	
-	public GameScreen(String difficulty) throws IOException {	
+	public GameScreen(String difficulty, String theme) throws IOException {	
 		
-
-		game = new HangmanGame("./default_words.csv", this);
+		String wordbank;
+		
+		switch (theme.toLowerCase()) {
+	        case "default":
+	            wordbank = "default_words.csv";
+	            break;
+	        case "space":
+	        	wordbank = "space_words.csv";
+	            break;
+	        default:
+	            throw new IllegalArgumentException("Invalid theme");
+	    }
+	       
+		game = new HangmanGame(wordbank, this, difficulty);
 		//the other files are western_words.csv, space_words.csv and ocean_words.csv
 
 		
@@ -32,7 +44,7 @@ public class GameScreen extends Screen implements Observer {
 		gameScreenLayout.setLayout(new GridLayout(1,2)); // Magic number bad
 		
 		//Create imagePanel
-		hangmanPanel = new HangmanPanel();		
+		hangmanPanel = new HangmanPanel(theme);		
 		
 		//Create gameplayPanel
 		JPanel gameplayPanel = new JPanel();
@@ -143,10 +155,10 @@ public class GameScreen extends Screen implements Observer {
     }
     
     @Override
-    public void updateGameState(String guessesRemaining, boolean gameOver, boolean gameWon) {
+    public void updateGameState(String guessesRemaining, boolean gameOver, boolean gameWon, boolean correctGuess) {
     	if(!gameOver) {
     		String text = "Guesses Remaining " + guessesRemaining;
-    		hangmanPanel.updatePanel(text);
+    		hangmanPanel.updatePanel(text, correctGuess);
     	}else {
     		if(gameWon) {
                 JOptionPane.showMessageDialog(null, "!!! YOU WON !!!");
