@@ -33,31 +33,28 @@ public class MainMenuScreen extends Screen {
 		
 		JPanel optionsPanel = new JPanel();
 		optionsPanel.setBackground(new Color(128, 128, 128));
-		optionsPanel.setLayout(null);
+		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 		add(optionsPanel, BorderLayout.CENTER);
 		
 		// Set Main Menu Screen Logo
 		JLabel titleLabel = new JLabel(imageIcon);
-		titleLabel.setBounds(83, 0, 245, 80);
+		titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		optionsPanel.add(titleLabel);
-		titleLabel.setLabelFor(this);
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		
+				
 		// Create Start, Options, and Quit button
 		JButton startBtn = new JButton("Start");
 		startBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
-		startBtn.setBounds(159, 110, 89, 23);
+		startBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		optionsPanel.add(startBtn);
 		
 		JButton optionsBtn = new JButton("Options");
 		optionsBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
-		optionsBtn.setBounds(159, 144, 89, 23);
+		optionsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		optionsPanel.add(optionsBtn);
 		
 		JButton quitBtn = new JButton("Quit");
 		quitBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
-		quitBtn.setBounds(159, 178, 89, 23);
+		quitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		optionsPanel.add(quitBtn);
 		
 		
@@ -97,7 +94,7 @@ public class MainMenuScreen extends Screen {
                 System.exit(0);
             }
         });
-
+        
         
         // Set background color
 		setBackground(new Color(255, 255, 255));

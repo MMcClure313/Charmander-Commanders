@@ -30,7 +30,7 @@ public class ScreenManager extends JFrame{
 		
 		setTitle("Word Games");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(455, 400));
+        setPreferredSize(new Dimension(800, 600));
         
         cardLayout = new CardLayout();
         setLayout(cardLayout);
