@@ -55,12 +55,13 @@ public class HangmanPanel extends JPanel {
 	}
 	
 	
-	public void updatePanel(String guesses, boolean correctGuess){
+	public void updatePanel(int guesses, boolean correctGuess){
+		System.out.print(guesses);
 		
-		guessesRemainingLabel.setText(guesses);
+		guessesRemainingLabel.setText("Guesses Remaining " + guesses);
 		
 		if(!correctGuess) {
-			imageIndex++;
+			imageIndex = images.size() - guesses - 1;
 			activeImage = images.get(imageIndex);
 			imagePanel.removeAll();
 			imagePanel.add(activeImage);

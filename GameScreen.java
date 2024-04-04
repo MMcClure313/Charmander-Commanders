@@ -18,6 +18,7 @@ public class GameScreen extends Screen implements Observer {
 
 	private HangmanPanel hangmanPanel;
 	
+	
 	public GameScreen(String difficulty, String theme) throws IOException {	
 		
 		String wordbank;
@@ -141,7 +142,13 @@ public class GameScreen extends Screen implements Observer {
 	
     @Override
     public void updateDisplayedPhrase(String updateDisplayPhrase) {
-        displayedPhrase.setText(updateDisplayPhrase);
+    	
+        StringBuilder spacedString = new StringBuilder();
+        for (char c : updateDisplayPhrase.toCharArray()) {
+            spacedString.append(c).append(" ");
+        }
+        String finalString = spacedString.toString().trim();
+        displayedPhrase.setText(finalString);
     }
     
     @Override
@@ -155,10 +162,10 @@ public class GameScreen extends Screen implements Observer {
     }
     
     @Override
-    public void updateGameState(String guessesRemaining, boolean gameOver, boolean gameWon, boolean correctGuess) {
+    public void updateGameState(int guessesRemaining, boolean gameOver, boolean gameWon, boolean correctGuess) {
+    	hangmanPanel.updatePanel(guessesRemaining, correctGuess);
     	if(!gameOver) {
-    		String text = "Guesses Remaining " + guessesRemaining;
-    		hangmanPanel.updatePanel(text, correctGuess);
+  
     	}else {
     		if(gameWon) {
                 JOptionPane.showMessageDialog(null, "!!! YOU WON !!!");
