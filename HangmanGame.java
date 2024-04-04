@@ -42,8 +42,7 @@ public class HangmanGame {
             }
             observer.updateGuessedLetters(sb.toString());
             int guessesRemaining = maxIncorrectGuesses - incorrectGuesses;
-            String text = "" + guessesRemaining;
-            observer.updateGameState(text, isGameOver(), isGameWon(), guessCorrect);
+            observer.updateGameState(guessesRemaining, isGameOver(), isGameWon(), guessCorrect);
             
             
         }
