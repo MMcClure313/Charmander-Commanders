@@ -29,6 +29,12 @@ public class GameScreen extends Screen implements Observer {
 	        case "space":
 	        	wordbank = "space_words.csv";
 	            break;
+	        case "western":
+	        	wordbank = "western_words.csv";
+	        	break;
+	        case "ocean":
+	        	wordbank = "ocean_words.csv";
+	        	break;
 	        default:
 	            throw new IllegalArgumentException("Invalid theme");
 	    }

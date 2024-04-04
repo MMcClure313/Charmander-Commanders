@@ -117,6 +117,8 @@ public class OptionsScreen extends Screen{
 		themeBox.setBounds(137, 69, 173, 22);
 		themeBox.addItem("Default");
 		themeBox.addItem("Space");
+		themeBox.addItem("Western");
+		themeBox.addItem("Ocean");
 		optionsPanel.add(themeBox);
 		
 		
