@@ -174,9 +174,11 @@ public class GameScreen extends Screen implements Observer {
   
     	}else {
     		if(gameWon) {
+    			StatsManager.getInstance().incrementWins();
                 JOptionPane.showMessageDialog(null, "!!! YOU WON !!!");
                 returnToMenu();      		
     		}else {
+    			StatsManager.getInstance().incrementLosses();
                 JOptionPane.showMessageDialog(null, "YOU LOSE :(");
                 returnToMenu();  
     		}
