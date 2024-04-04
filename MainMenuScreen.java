@@ -47,35 +47,17 @@ public class MainMenuScreen extends Screen {
 		startBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		optionsPanel.add(startBtn);
 		
-		JButton optionsBtn = new JButton("Options");
-		optionsBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
-		optionsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		optionsPanel.add(optionsBtn);
+		JButton statsBtn = new JButton("Statistics");
+		statsBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
+		statsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		optionsPanel.add(statsBtn);
 		
 		JButton quitBtn = new JButton("Quit");
 		quitBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
 		quitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		optionsPanel.add(quitBtn);
 		
-		
-		// Button Action Listeners
-		// Start button action to start the game
-		/*
-        startBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Perform actions when Start button is clicked
-                // Switch to the game screen
-            	GameScreen gameScreen = null;
-				try {
-					gameScreen = new GameScreen();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-            	gameScreen.switchToThis();
-                
-            }
-        });*/
+	
         // Options button to change settings
         startBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -95,6 +77,11 @@ public class MainMenuScreen extends Screen {
             }
         });
         
+        statsBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ScreenManager.getInstance().switchScreen(new StatsScreen());
+            }
+        });
         
         // Set background color
 		setBackground(new Color(255, 255, 255));
