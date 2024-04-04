@@ -1,9 +1,9 @@
 # Group 6's Hangman
 This application is a bite-size hangman application with all the functionality a player would need to play hangman.
 
-On starting the application, a main menu appears with Start Options and Quit. 
+On starting the application, a main menu appears with Start Statistics and Quit. 
 Start will provide the user with an options menu to select the difficulty and theme they would like.
-Options is currently inactive but in the future will allow users to track stats and change things about the game.
+Statistics will bring the user to a minimal page displaying wins and losses, future versions will have a more detailed page.
 Quit will close the application.
 
 Within the hangman game, you will be introduced to the main game screen.
