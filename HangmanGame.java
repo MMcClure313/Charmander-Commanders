@@ -71,6 +71,14 @@ public class HangmanGame {
         
         System.out.print(hiddenPhrase); // FOR TESTING REMOVE LATER
     }
+    
+    protected String getHiddenPhrase(){
+    	return hiddenPhrase;
+    }
+    
+    protected void addIncorrectGuesses() {
+    	maxIncorrectGuesses++;
+    }
 
     private String getDisplayedPhrase() {
         return displayedPhrase.toString();
