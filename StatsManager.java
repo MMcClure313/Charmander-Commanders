@@ -39,7 +39,7 @@ public class StatsManager {
     }
     
     public void addPoints(){
-    	points = wins * 50;
+    	points = points + 50;
     }
     
     public void powerupUsed(){
