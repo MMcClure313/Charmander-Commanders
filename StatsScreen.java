@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -11,6 +13,7 @@ public class StatsScreen extends Screen{
 	
 	public StatsScreen() {
 		
+
 		setLayout(new BorderLayout());
 		
 		JButton backButton = new JButton("Back");
