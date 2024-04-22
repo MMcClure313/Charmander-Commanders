@@ -2,140 +2,67 @@
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import java.awt.Color;
-import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
-import javax.swing.JList;
 import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Enumeration;
-
-import javax.swing.JSplitPane;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JComboBox;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.AbstractButton;
-import javax.swing.BoxLayout;
-import java.awt.Component;
-import java.awt.Dimension;
+import javax.swing.BorderFactory;
 
 public class OptionsScreen extends Screen{
 	
+	private JComboBox<String> gameModeComboBox;
+	private JComboBox<String> themeComboBox;
+	private JComboBox<String> difficultyComboBox;
 	
+	public OptionsScreen() {
+		
+		this.setLayout(new BorderLayout());
+		
+		JPanel gameModePanel = new JPanel();
+		JPanel themePanel = new JPanel();
+		JPanel difficultyPanel = new JPanel();
 	
-	public OptionsScreen()
-	{
-		setMinimumSize(new Dimension(500, 305));
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		gameModePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		themePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		difficultyPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		JPanel optionsPanel = new JPanel();
-		optionsPanel.setBackground(new Color(255, 255, 255));
-		add(optionsPanel);
-		optionsPanel.setLayout(null);
+		JPanel centerContainer = new JPanel();
+		centerContainer.setLayout(new GridLayout(1, 3));
 		
-		//Title label
-		JLabel optionsLabel = new JLabel("Options");
-		optionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		optionsLabel.setFont(new Font("Arial Black", Font.BOLD, 18));
-		optionsLabel.setBounds(137, 11, 173, 22);
-		optionsPanel.add(optionsLabel);
-		
-		
-		// Header Labels
-		JLabel difficultyLabel = new JLabel("Difficulty");
-		difficultyLabel.setFont(new Font("Arial Black", Font.BOLD, 15));
-		difficultyLabel.setBounds(335, 44, 165, 23);
-		optionsPanel.add(difficultyLabel);
+		JLabel modeLabel = new JLabel("Game Mode");
+		gameModePanel.add(modeLabel);
+        
+        String[] gameModes = {"Normal", "Streak", "Timed"};
+        gameModeComboBox = new JComboBox<>(gameModes);
+        gameModePanel.add(gameModeComboBox);
 		
 		JLabel themeLabel = new JLabel("Theme");
-		themeLabel.setFont(new Font("Arial Black", Font.BOLD, 15));
-		themeLabel.setBounds(166, 44, 109, 23);
-		optionsPanel.add(themeLabel);
+		themePanel.add(themeLabel);
 		
-		JLabel settingsLabel = new JLabel("Settings");
-		settingsLabel.setFont(new Font("Arial Black", Font.BOLD, 15));
-		settingsLabel.setBounds(6, 44, 82, 23);
-		optionsPanel.add(settingsLabel);
+        String[] themes = {"Default", "Space", "Western", "Ocean"};
+        themeComboBox = new JComboBox<>(themes);
+        themePanel.add(themeComboBox);
 		
-		JLabel timerLabel = new JLabel("Timer");
-		timerLabel.setFont(new Font("Arial Black", Font.PLAIN, 12));
-		timerLabel.setBounds(6, 95, 46, 14);
-		optionsPanel.add(timerLabel);
+		JLabel difficultyLabel = new JLabel("Difficulty");
+		difficultyPanel.add(difficultyLabel);
 		
+        String[] difficulties = {"Easy", "Medium", "Hard"};
+        difficultyComboBox = new JComboBox<>(difficulties);
+        difficultyPanel.add(difficultyComboBox);
 		
+		centerContainer.add(gameModePanel);
+		centerContainer.add(themePanel);
+		centerContainer.add(difficultyPanel);
 		
-		//Difficulty buttons
-		JRadioButton easyBtn = new JRadioButton("Easy");
-		easyBtn.setSelected(true);
-		easyBtn.setFont(new Font("Arial Black", Font.PLAIN, 11));
-		easyBtn.setBounds(335, 77, 109, 23);
-		optionsPanel.add(easyBtn);
+		JPanel topButtonPanel = new JPanel();
+		topButtonPanel.setBorder(BorderFactory.createEtchedBorder());
+		topButtonPanel.setLayout(new GridLayout(1,10));
 		
-		JRadioButton mediumBtn = new JRadioButton("Medium");
-		mediumBtn.setFont(new Font("Arial Black", Font.PLAIN, 11));
-		mediumBtn.setBounds(335, 116, 109, 23);
-		optionsPanel.add(mediumBtn);
-		
-		JRadioButton hardBtn = new JRadioButton("Hard");
-		hardBtn.setFont(new Font("Arial Black", Font.PLAIN, 11));
-		hardBtn.setBounds(335, 154, 109, 23);
-		optionsPanel.add(hardBtn);
-		
-		//Group difficulty buttons together
-		ButtonGroup difficultyBtnGroup = new ButtonGroup();
-		difficultyBtnGroup.add(easyBtn);
-		difficultyBtnGroup.add(mediumBtn);
-		difficultyBtnGroup.add(hardBtn);
-		
-		
-		//Timer on and off buttons
-		JRadioButton onBtn = new JRadioButton("On");
-		onBtn.setFont(new Font("Arial Black", Font.PLAIN, 11));
-		onBtn.setBounds(6, 116, 109, 23);
-		optionsPanel.add(onBtn);
-		
-		JRadioButton offBtn = new JRadioButton("Off");
-		offBtn.setSelected(true);
-		offBtn.setFont(new Font("Arial Black", Font.PLAIN, 11));
-		offBtn.setBounds(6, 142, 109, 23);
-		optionsPanel.add(offBtn);
-		
-		//Group timer on and off button together
-		ButtonGroup timerBtnGroup = new ButtonGroup();
-		timerBtnGroup.add(offBtn);
-		timerBtnGroup.add(onBtn);
-		
-		
-		// Box for the user to select the theme
-		JComboBox<String> themeBox = new JComboBox<String>();
-		themeBox.setBounds(137, 69, 173, 22);
-		themeBox.addItem("Default");
-		themeBox.addItem("Space");
-		themeBox.addItem("Western");
-		themeBox.addItem("Ocean");
-		optionsPanel.add(themeBox);
-		
-		
-		
-		// Main menu button to return to the main menu screen
-		JButton mainMenuBtn = new JButton("Main Menu");
-		mainMenuBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
-		mainMenuBtn.setBounds(166, 244, 124, 23);
-		optionsPanel.add(mainMenuBtn);
-		
-		JButton beginBtn = new JButton("Begin");
-		beginBtn.setFont(new Font("Arial Black", Font.BOLD, 12));
-		beginBtn.setBounds(166, 150, 124, 23);
-		optionsPanel.add(beginBtn);
-		
-		// Action listener for the main menu button
-		mainMenuBtn.addActionListener(new ActionListener() {
+		JButton mainMenuButton = new JButton("Main Menu");
+		mainMenuButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Perform actions when MainMenu button is clicked
                 // Return back to the Main Menu
@@ -143,41 +70,62 @@ public class OptionsScreen extends Screen{
                 
             }
         });
-
 		
-		//So this is where all the settings are going to go for the game. We'll make GameScreen construct with a few paramaters for difficulty, timed, and themes in order to make it work.
-		beginBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				GameScreen gmScreen = null;
-				
-				try {
-					String difficulty = "";
-					
-				    for (Enumeration buttons = difficultyBtnGroup.getElements(); buttons.hasMoreElements();) {
-				        AbstractButton button = (AbstractButton) buttons.nextElement();
-
-				        if (button.isSelected()) {
-				            difficulty = button.getText();
-				            break;
-				        }
-				    }
-				    
-				    String selectedTheme = (String) themeBox.getSelectedItem();
-					
-					gmScreen = new GameScreen(difficulty, selectedTheme);
-					
-				} catch(IOException e1) {
+		topButtonPanel.add(mainMenuButton);
+		for(int i = 0; i < 6; i++) {
+			topButtonPanel.add(new JPanel());
+		}		
+		add(topButtonPanel, BorderLayout.NORTH);
+		
+		JPanel bottomButtonPanel = new JPanel();
+		bottomButtonPanel.setBorder(BorderFactory.createEtchedBorder());
+		bottomButtonPanel.setLayout(new GridLayout(1,3));
+			
+		JButton startButton = new JButton("Start");
+		startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	try {
+					startButtonAction();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				gmScreen.switchToThis();
-			}
-			
-		});
+                
+            }
+        });
+		bottomButtonPanel.add(new JPanel());
+		bottomButtonPanel.add(startButton);
+		bottomButtonPanel.add(new JPanel());
 		
+		add(bottomButtonPanel, BorderLayout.SOUTH);
 		
-		
-		
+		add(centerContainer, BorderLayout.CENTER);
 	}
+	
+	private void startButtonAction() throws IOException {
+		
+		GameScreen gmScreen = null;
+		
+		String selectedMode = (String) gameModeComboBox.getSelectedItem();
+		String selectedTheme = (String) themeComboBox.getSelectedItem();
+		String selectedDifficulty = (String) difficultyComboBox.getSelectedItem();
+		
+		switch (selectedMode) {
+	        case "Normal":
+	        	gmScreen = new GameScreen(selectedDifficulty, selectedTheme, false);
+	            break;
+	        case "Streak":
+	        	gmScreen = new GameScreen(selectedDifficulty, selectedTheme, true);
+	            break;
+	        case "Timed":
+	        	gmScreen = new GameScreen(selectedDifficulty, selectedTheme, false, 10);
+	        	break;
+	        default:
+	            throw new IllegalArgumentException("Invalid mode");
+	    }
+		
+		gmScreen.switchToThis();
+	}
+		
+
 }

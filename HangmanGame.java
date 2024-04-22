@@ -18,12 +18,14 @@ public class HangmanGame {
     private static final int EASY_MAX_INCORRECT_GUESSES = 8;
     private static final int MEDIUM_MAX_INCORRECT_GUESSES = 6;
     private static final int HARD_MAX_INCORRECT_GUESSES = 4;
+    private String difficulty;
+    
 
     public HangmanGame(String wordBankFile, Observer observer, String difficulty) throws IOException {
-    	
+    	this.difficulty = difficulty;
     	wordGenerator = new WordGenerator(wordBankFile);
     	this.observer = observer;
-    	initializeGame(difficulty);
+    	initializeGame();
     	
     }
     
@@ -48,7 +50,15 @@ public class HangmanGame {
         }
     }
     
-    private void initializeGame(String difficulty) {
+    private void initializeGame() {
+
+        generateNewWord();
+        incorrectGuesses = 0;   
+        
+
+    }
+    
+    private void generateNewWord() {
         hiddenPhrase = wordGenerator.getRandomWord();
         displayedPhrase = new StringBuilder("_".repeat(hiddenPhrase.length()));
         guessedLetters = new ArrayList<>();
@@ -67,9 +77,8 @@ public class HangmanGame {
 	            throw new IllegalArgumentException("Invalid difficulty level");
 	    }
         
-        incorrectGuesses = 0;   
+        System.out.println(hiddenPhrase);
         
-        System.out.print(hiddenPhrase); // FOR TESTING REMOVE LATER
     }
 
     private String getDisplayedPhrase() {
@@ -105,5 +114,18 @@ public class HangmanGame {
     
     private boolean isGameWon() {
     	return (maxIncorrectGuesses - incorrectGuesses) != 0;
+    }
+    
+    public void nextWord() {
+    	generateNewWord();
+    	int guessesRemaining = maxIncorrectGuesses - incorrectGuesses;
+    	observer.updateDisplayedPhrase(getDisplayedPhrase());
+        StringBuilder sb = new StringBuilder();
+        for(Character c : guessedLetters) {
+        	sb.append(c);
+        	sb.append(' ');
+        }
+        observer.updateGuessedLetters(sb.toString());
+    	observer.updateGameState(guessesRemaining, false, false, true);
     }
 }
