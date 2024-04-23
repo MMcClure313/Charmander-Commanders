@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -97,6 +98,54 @@ public class GameScreen extends Screen implements Observer {
             }
         });
         
+        JButton FreeLetterButton = new JButton("Free Letter");
+        FreeLetterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	int currPoints = StatsManager.getInstance().getPoints();
+            	
+            	if(currPoints >= 50)
+            	{
+            		String phrase = game.getHiddenPhrase();            		
+            		Random random = new Random();
+            	    int index = random.nextInt(phrase.length());
+            	    char FreeLetter = phrase.charAt(index);
+            	    game.guessLetter(FreeLetter);
+            	    StatsManager.getInstance().powerupUsed();
+            	}
+            	else
+            	{
+            		JOptionPane.showMessageDialog(guessPanel,
+            			    "Not enough points",
+            			    "",
+            			    JOptionPane.WARNING_MESSAGE);
+            	} 	
+            }
+        });
+        
+        JButton FreeGuessButton = new JButton("Free Guess");
+        FreeGuessButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	int currPoints = StatsManager.getInstance().getPoints();
+            	
+            	if(currPoints >= 50)
+            	{
+            		game.addIncorrectGuesses();
+            	    StatsManager.getInstance().powerupUsed();
+            	}
+            	else
+            	{
+            		JOptionPane.showMessageDialog(guessPanel,
+            			    "Not enough points",
+            			    "",
+            			    JOptionPane.WARNING_MESSAGE);
+            	} 	
+            }
+        });
+        
         JButton exitButton = new JButton("X");
         exitButton.setBackground(Color.red); 
         exitButton.addActionListener(new ActionListener() {
@@ -120,6 +169,8 @@ public class GameScreen extends Screen implements Observer {
 		
 		guessPanel.add(guessEntryBox);
 		guessPanel.add(guessButton);
+		guessPanel.add(FreeLetterButton);
+		guessPanel.add(FreeGuessButton);
 		
 		//Create lettersPanel
 		JPanel lettersPanel = new JPanel();
@@ -214,6 +265,7 @@ public class GameScreen extends Screen implements Observer {
     	}else {
     		if(gameWon) {
     			StatsManager.getInstance().incrementWins();
+    			StatsManager.getInstance().addPoints();
                 JOptionPane.showMessageDialog(null, "!!! YOU WON !!!");
                 if(!streakMode) {
                 	returnToMenu();

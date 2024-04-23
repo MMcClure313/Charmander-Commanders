@@ -80,6 +80,14 @@ public class HangmanGame {
         System.out.println(hiddenPhrase);
         
     }
+    
+    protected String getHiddenPhrase(){
+    	return hiddenPhrase;
+    }
+    
+    protected void addIncorrectGuesses() {
+    	maxIncorrectGuesses++;
+    }
 
     private String getDisplayedPhrase() {
         return displayedPhrase.toString();

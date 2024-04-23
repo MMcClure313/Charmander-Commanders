@@ -3,10 +3,12 @@ public class StatsManager {
     private static StatsManager INSTANCE; // Singleton instance
     private int wins;
     private int losses;
+    private int points;
 
     private StatsManager() {
         wins = 0;
         losses = 0;
+        points = 0;
     }
 
     public static synchronized StatsManager getInstance() {
@@ -30,5 +32,17 @@ public class StatsManager {
 
     public int getLosses() {
         return losses;
+    }
+    
+    public int getPoints(){
+    	return points;
+    }
+    
+    public void addPoints(){
+    	points = points + 50;
+    }
+    
+    public void powerupUsed(){
+    	points = points - 50;
     }
 }
