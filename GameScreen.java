@@ -103,7 +103,7 @@ public class GameScreen extends Screen implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
-            	int currPoints = StatsManager.getInstance().getPoints();
+            	int currPoints = StatsManager.getInstance().getCSVal(10);
             	
             	if(currPoints >= 50)
             	{
@@ -112,7 +112,7 @@ public class GameScreen extends Screen implements Observer {
             	    int index = random.nextInt(phrase.length());
             	    char FreeLetter = phrase.charAt(index);
             	    game.guessLetter(FreeLetter);
-            	    StatsManager.getInstance().powerupUsed();
+            	    StatsManager.getInstance().modifyPoints(false);
             	}
             	else
             	{
@@ -129,12 +129,12 @@ public class GameScreen extends Screen implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
-            	int currPoints = StatsManager.getInstance().getPoints();
+            	int currPoints = StatsManager.getInstance().getCSVal(10);
             	
             	if(currPoints >= 50)
             	{
             		game.addIncorrectGuesses();
-            	    StatsManager.getInstance().powerupUsed();
+            	    StatsManager.getInstance().modifyPoints(false);
             	}
             	else
             	{
@@ -264,18 +264,38 @@ public class GameScreen extends Screen implements Observer {
   
     	}else {
     		if(gameWon) {
-    			StatsManager.getInstance().incrementWins();
-    			StatsManager.getInstance().addPoints();
+    			if(timer != null) {
+    				int timeRemaining =
+    					90 - timer.getTimeRemaining();
+                	timer.pauseTimer();
+        			StatsManager.getInstance().incrementWins(4);
+                	
+        			if(StatsManager.getInstance().getCSVal(6) != 0)
+        				timeRemaining = Math.min(StatsManager.getInstance().getCSVal(6), timeRemaining);
+                	StatsManager.getInstance().update(timeRemaining, 6);
+    			} else {
+        			StatsManager.getInstance().incrementWins(2);
+    			}
+    			StatsManager.getInstance().modifyPoints(true);
                 JOptionPane.showMessageDialog(null, "!!! YOU WON !!!");
                 if(!streakMode) {
                 	returnToMenu();
-                }else {      		
+                }else {      
+    				StatsManager.getInstance().incrementWins(8);
                 	game.nextWord();
                 	streakCount++;
                 	streakLabel.setText("" + streakCount);;
                 }
     		}else {
-    			StatsManager.getInstance().incrementLosses();
+    			if(timer != null) {
+    				StatsManager.getInstance().incrementLosses(5);
+    			} else if(streakMode) {
+    				int largestStreak = Math.max(StatsManager.getInstance().getCSVal(7), streakCount);
+    				StatsManager.getInstance().incrementLosses(9);
+    				StatsManager.getInstance().update(largestStreak, 7);
+    			} else {
+        			StatsManager.getInstance().incrementLosses(3);
+    			}
                 JOptionPane.showMessageDialog(null, "YOU LOSE :(");
                 returnToMenu();  
     		}
