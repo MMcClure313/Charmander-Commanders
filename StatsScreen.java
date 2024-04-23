@@ -29,8 +29,8 @@ public class StatsScreen extends Screen{
 		
 		JPanel container = new JPanel(new FlowLayout());
 		
-		JLabel winsLabel = new JLabel("Wins: " + StatsManager.getInstance().getWins());
-		JLabel lossLabel = new JLabel("Losses: " + StatsManager.getInstance().getLosses());
+		JLabel winsLabel = new JLabel("Wins: " + StatsManager.getInstance().getCSVal(0));
+		JLabel lossLabel = new JLabel("Losses: " + StatsManager.getInstance().getCSVal(1));
 		
 		container.add(winsLabel);
 		container.add(lossLabel);

@@ -58,16 +58,25 @@ public class StatsManager {
         return INSTANCE;
     }
 
+    public void incrementWins(int num) {
+    	int[] arrayToIncrease = {0, num};
+    	incramentCSV(arrayToIncrease);
+        wins++;
+    }
     public void incrementWins() {
     	int[] arrayToIncrease = {0};
     	incramentCSV(arrayToIncrease);
         wins++;
     }
 
+    public void incrementLosses(int num) {
+    	int[] arrayToIncrease = {1, num};
+    	incramentCSV(arrayToIncrease);
+        losses++;
+    }
     public void incrementLosses() {
     	int[] arrayToIncrease = {1};
     	incramentCSV(arrayToIncrease);
-    	
         losses++;
     }
 
