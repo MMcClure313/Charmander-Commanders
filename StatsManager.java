@@ -49,6 +49,7 @@ public class StatsManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public static synchronized StatsManager getInstance() {
@@ -88,7 +89,7 @@ public class StatsManager {
     public int getLosses() {
         return losses;
     }
-    
+
     public int getCSVal(int num) {
         try {
             Scanner sc = new Scanner(new File(filePath));
@@ -151,5 +152,17 @@ public class StatsManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+    public int getPoints(){
+    	return points;
+    }
+    
+    public void addPoints(){
+    	points = points + 50;
+    }
+    
+    public void powerupUsed(){
+    	points = points - 50;
+
     }
 }

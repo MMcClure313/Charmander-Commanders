@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -18,9 +19,13 @@ public class GameScreen extends Screen implements Observer {
 
 	private HangmanPanel hangmanPanel;
 	
+	private GameTimer timer;
+	private boolean streakMode;
+	private int streakCount;
+	private JLabel streakLabel;
 	
-	public GameScreen(String difficulty, String theme) throws IOException {	
-		
+	public GameScreen(String difficulty, String theme, boolean streakOn, int... initialTime) throws IOException {	
+    	
 		String wordbank;
 		
 		switch (theme.toLowerCase()) {
@@ -93,6 +98,54 @@ public class GameScreen extends Screen implements Observer {
             }
         });
         
+        JButton FreeLetterButton = new JButton("Free Letter");
+        FreeLetterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	int currPoints = StatsManager.getInstance().getPoints();
+            	
+            	if(currPoints >= 50)
+            	{
+            		String phrase = game.getHiddenPhrase();            		
+            		Random random = new Random();
+            	    int index = random.nextInt(phrase.length());
+            	    char FreeLetter = phrase.charAt(index);
+            	    game.guessLetter(FreeLetter);
+            	    StatsManager.getInstance().powerupUsed();
+            	}
+            	else
+            	{
+            		JOptionPane.showMessageDialog(guessPanel,
+            			    "Not enough points",
+            			    "",
+            			    JOptionPane.WARNING_MESSAGE);
+            	} 	
+            }
+        });
+        
+        JButton FreeGuessButton = new JButton("Free Guess");
+        FreeGuessButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	int currPoints = StatsManager.getInstance().getPoints();
+            	
+            	if(currPoints >= 50)
+            	{
+            		game.addIncorrectGuesses();
+            	    StatsManager.getInstance().powerupUsed();
+            	}
+            	else
+            	{
+            		JOptionPane.showMessageDialog(guessPanel,
+            			    "Not enough points",
+            			    "",
+            			    JOptionPane.WARNING_MESSAGE);
+            	} 	
+            }
+        });
+        
         JButton exitButton = new JButton("X");
         exitButton.setBackground(Color.red); 
         exitButton.addActionListener(new ActionListener() {
@@ -116,6 +169,8 @@ public class GameScreen extends Screen implements Observer {
 		
 		guessPanel.add(guessEntryBox);
 		guessPanel.add(guessButton);
+		guessPanel.add(FreeLetterButton);
+		guessPanel.add(FreeGuessButton);
 		
 		//Create lettersPanel
 		JPanel lettersPanel = new JPanel();
@@ -135,17 +190,52 @@ public class GameScreen extends Screen implements Observer {
 		gameScreenLayout.add(gameplayPanel);
 		
 		metaButtonPanel.add(exitButton);
-		for(int i = 0; i < 9; i++) {
+		
+        if (initialTime.length > 0) {
+            timer = new GameTimer(initialTime[0]);
+            JPanel timerPanel = new JPanel();
+            JLabel timerLabel = new JLabel("" + timer.getTimeRemaining());
+            timerPanel.add(timerLabel);
+            metaButtonPanel.add(timerPanel);
+            
+            Timer swingTimer = new Timer(1000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Update the timer label with the remaining time
+                    timerLabel.setText("" + timer.getTimeRemaining());
+                    // Check if the timer has expired
+                    if (timer.getTimeRemaining() <= 0) {
+                        // Stop the Swing Timer
+                        ((Timer)e.getSource()).stop();
+                        // Handle timer expiration (e.g., end the game)
+                        updateGameState(0, true, false, false);
+                    }
+                }
+            });
+            // Start the Swing Timer
+            swingTimer.start();
+            timer.startTimer();
+        }
+        
+        if(streakOn) {
+        	streakMode = streakOn;
+        	streakCount = 0;
+        	streakLabel = new JLabel("" + streakCount);
+        	metaButtonPanel.add(streakLabel);
+        }
+        
+		for(int i = 0; i < 8; i++) {
 			metaButtonPanel.add(new JPanel());
 		}
 		
 		
 		this.add(gameScreenLayout, BorderLayout.CENTER);
 		this.add(metaButtonPanel, BorderLayout.NORTH);
-		game.startGame();			
+		game.startGame();
 		
 	}
-	
+
+
     @Override
     public void updateDisplayedPhrase(String updateDisplayPhrase) {
     	
@@ -175,8 +265,15 @@ public class GameScreen extends Screen implements Observer {
     	}else {
     		if(gameWon) {
     			StatsManager.getInstance().incrementWins();
+    			StatsManager.getInstance().addPoints();
                 JOptionPane.showMessageDialog(null, "!!! YOU WON !!!");
-                returnToMenu();      		
+                if(!streakMode) {
+                	returnToMenu();
+                }else {      		
+                	game.nextWord();
+                	streakCount++;
+                	streakLabel.setText("" + streakCount);;
+                }
     		}else {
     			StatsManager.getInstance().incrementLosses();
                 JOptionPane.showMessageDialog(null, "YOU LOSE :(");
