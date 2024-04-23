@@ -96,6 +96,7 @@ public class OptionsScreen extends Screen{
 		bottomButtonPanel.add(new JPanel());
 		bottomButtonPanel.add(startButton);
 		bottomButtonPanel.add(new JPanel());
+
 		
 		add(bottomButtonPanel, BorderLayout.SOUTH);
 		
@@ -118,11 +119,12 @@ public class OptionsScreen extends Screen{
 	        	gmScreen = new GameScreen(selectedDifficulty, selectedTheme, true);
 	            break;
 	        case "Timed":
-	        	gmScreen = new GameScreen(selectedDifficulty, selectedTheme, false, 10);
+	        	gmScreen = new GameScreen(selectedDifficulty, selectedTheme, false, 90);
 	        	break;
 	        default:
 	            throw new IllegalArgumentException("Invalid mode");
 	    }
+
 		
 		gmScreen.switchToThis();
 	}
